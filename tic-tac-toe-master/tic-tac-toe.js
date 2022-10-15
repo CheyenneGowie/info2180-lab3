@@ -1,5 +1,9 @@
+var change = false;
+let roundWon = false;
 window.onload = function()
 {
+    var change = false;
+    let roundWon = false;
     let board= document.getElementById("board");
     let squares= document.querySelectorAll("#board div");
     for (let s=0; s<squares.length;s++)
@@ -47,25 +51,42 @@ window.onload = function()
             // if (options[index] != "" || !running){
             //     return;
             // }
-            options[index] = currentPlayer;
+            if(square.textContent == "" && !roundWon)
+            {
+                options[index] = currentPlayer;
             squareUpdate( square,currentPlayer);
+            change = true;
+            checkWinner();
+
+            }
+            else{
+                change = false;
+            }
+            
             
             // console.log(this)
             // this.textContent="X";
-            checkWinner();
+           
             
         }
         function squareUpdate(square,currentPlayer){
+           
+                square.textContent = currentPlayer;
+                         
             
-            square.textContent = currentPlayer;
+            
 
         }
         function changePlayer(){
-            currentPlayer=(currentPlayer == "X") ? "O" : "X";
+            if(change)
+            {
+                currentPlayer=(currentPlayer == "X") ? "O" : "X";
             statusText.textContent = `${currentPlayer}'s turn`;
+            }
+            
         }
         function checkWinner(){
-            let roundWon = false;
+            roundWon = false;
 
             console.log(winningcombinations)
             for(let i =0; i < winningcombinations.length;i++){
@@ -91,7 +112,7 @@ window.onload = function()
                 document.getElementById("status").className="you-won"
                 statusText.innerHTML = `Congratulations ${currentPlayer} is the Winner!`;
                 running = true;
-
+                
             }
             else if(!options.includes("")){
                 statusText.innerText = `TIE`;
@@ -103,16 +124,16 @@ window.onload = function()
                
         }
         function newGame(){
+            change = false;
+            roundWon = false;
             currentPlayer= "X";
             options = ["", "", "", "", "", "", "", "", ""];
             statusText.textContent = `${currentPlayer}'s turn`;
             squares.forEach( square => square.textContent = "");
-            running= true;
+            running= false;
         }
     
-        // let hover=document.querySelector(".hover")
-
-        // let youWon=document.querySelector(".status.you-won")
+       
 
      
 }
